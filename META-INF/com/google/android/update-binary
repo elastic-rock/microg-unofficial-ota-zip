@@ -1,0 +1,192 @@
+#!/sbin/sh
+# Copyright 2013 Koushik Dutta, 2014 Ron Rieve
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# arg 1 is recovery api version, generally 3.
+# arg 2 is the pipe fd, to the recovery binary.
+# communicate with it using the recovery api.
+# arg 3 is the zip file
+
+echo -n -e 'ui_print Preparing...\n' > /proc/self/fd/$2
+
+FPE_NAME=F-DroidPrivilegedExtension
+FPE=${FPE_NAME}.apk
+
+FDROID_NAME=F-Droid
+FDROID=${FDROID_NAME}.apk
+
+GMS_NAME=GmsCore
+GMS=${GMS_NAME}.apk
+
+GSF_NAME=GsfProxy
+GSF=${GSF_NAME}.apk
+
+FS_NAME=FakeStore
+FS=${FS_NAME}.apk
+
+INB_NAME=IchnilegedaeaNlpBackend
+INB=${INB_NAME}.apk
+
+NGB_NAME=NominatimGeocoderBackend
+NGB=${NGB_NAME}.apk
+
+P_PERM=privapp-permissions-microg.xml
+P_PERM_DIR="etc/permissions"
+D_PERM=default-permissions-microg.xml
+D_PERM_DIR="etc/default-permissions"
+SYSCON=sysconfig-microg.xml
+SYSCON_DIR="etc/sysconfig"
+
+ADDOND=80-microg.sh
+SYSTEM="/system"
+MOUNT_POINT="/system"
+BUILD_VERSION_SDK="$(getprop ro.build.version.sdk)"
+BUILD_VERSION_SDK_INT="${BUILD_VERSION_SDK#*=}"
+
+# Modern devices use /system as root ("/")
+system_as_root=`getprop ro.build.system_root_image`
+if [ "$system_as_root" == "true" ]; then
+  SYSTEM="/system/system"
+fi
+
+# Android 10 (SDK 29) and above use /mnt/system/ and /mnt/system/system
+if [ "${BUILD_VERSION_SDK_INT}" -ge 29 ]; then
+  SYSTEM="/mnt/system/system"
+  MOUNT_POINT="/mnt/system"
+fi
+
+cd /tmp
+mkdir microg
+cd microg
+unzip -o "$3"
+
+if mountpoint -q "$MOUNT_POINT"; then
+  mount -o remount,rw "$MOUNT_POINT"
+else
+  mount "/dev/block/bootdevice/by-name/system" "$MOUNT_POINT"
+fi
+
+rm -rf "${SYSTEM}/app/FDroid"*
+rm -rf "${SYSTEM}/priv-app/FDroid"*
+rm -rf "${SYSTEM}/app/F-Droid"*
+rm -rf "${SYSTEM}/priv-app/F-Droid"*
+
+rm -rf "${SYSTEM}/priv-app/GmsCore"*
+rm -rf "${SYSTEM}/priv-app/GsfProxy"*
+rm -rf "${SYSTEM}/priv-app/FakeStore"*
+
+rm -rf "${SYSTEM}/app/IchnaeaNlpBackend"*
+rm -rf "${SYSTEM}/app/NominatimGeocoderBackend"*
+
+if [ "${BUILD_VERSION_SDK_INT}" -ge 21 ]
+then
+  FPE_DIR="${SYSTEM}/priv-app/${FPE_NAME}"
+  mkdir ${FPE_DIR}
+  chmod 755 ${FPE_DIR}
+  F_DIR="${SYSTEM}/app/${FDROID_NAME}"
+  mkdir ${F_DIR}
+  chmod 755 ${F_DIR}
+  
+  GMS_DIR="${SYSTEM}/priv-app/${GMS_NAME}"
+  mkdir ${GMS_DIR}
+  chmod 755 ${GMS_DIR}
+  
+  GSF_DIR="${SYSTEM}/priv-app/${GSF_NAME}"
+  mkdir ${GSF_DIR}
+  chmod 755 ${GSF_DIR}
+  
+  FS_DIR="${SYSTEM}/priv-app/${FS_NAME}"
+  mkdir ${FS_DIR}
+  chmod 755 ${FS_DIR}
+  
+  INB_DIR="${SYSTEM}/app/${INB_NAME}"
+  mkdir ${INB_DIR}
+  chmod 755 ${INB_DIR}
+  
+  NGB_DIR="${SYSTEM}/app/${NGB_NAME}"
+  mkdir ${NGB_DIR}
+  chmod 755 ${NGB_DIR}
+  
+elif [ "${BUILD_VERSION_SDK_INT}" -ge 19 ]
+then
+  FPE_DIR="${SYSTEM}/priv-app"
+  F_DIR="${SYSTEM}/app"
+  GMS_DIR="${SYSTEM}/priv-app"
+  GSF_DIR="${SYSTEM}/priv-app"
+  FS_DIR="${SYSTEM}/priv-app"
+  INB_DIR="${SYSTEM}/app"
+  NGB_DIR="${SYSTEM}/app"
+  
+else
+  FPE_DIR="${SYSTEM}/app"
+  F_DIR="${SYSTEM}/app"
+  GMS_DIR="${SYSTEM}/app"
+  GSF_DIR="${SYSTEM}/app"
+  FS_DIR="${SYSTEM}/app"
+  INB_DIR="${SYSTEM}/app"
+  NGB_DIR="${SYSTEM}/app"
+fi
+
+echo -n -e 'ui_print Installing Permissions...\n' > /proc/self/fd/$2
+if [ "${BUILD_VERSION_SDK_INT}" -ge 26 ]
+then
+	mkdir ${SYSTEM}/${P_PERM_DIR}
+	chmod 755 ${SYSTEM}/${P_PERM_DIR}
+	cp ${P_PERM} ${SYSTEM}/${P_PERM_DIR}
+	chmod 644 ${SYSTEM}/${P_PERM_DIR}/${P_PERM}
+	
+	mkdir ${SYSTEM}/${D_PERM_DIR}
+	chmod 755 ${SYSTEM}/${D_PERM_DIR}
+	cp ${D_PERM} ${SYSTEM}/${D_PERM_DIR}
+	chmod 644 ${SYSTEM}/${D_PERM_DIR}/${D_PERM}
+	
+	mkdir ${SYSTEM}/${SYSCON_DIR}
+	chmod 755 ${SYSTEM}/${SYSCON_DIR}
+	cp ${SYSCON} ${SYSTEM}/${SYSCON_DIR}
+	chmod 644 ${SYSTEM}/${SYSCON_DIR}/${SYSCON}
+fi
+
+echo -n -e 'ui_print Installing F-DroidPrivilegedExtension...\n' > /proc/self/fd/$2
+cp ${FPE} ${FPE_DIR}
+chmod 644 ${FPE_DIR}/${FPE}
+
+echo -n -e 'ui_print Installing F-Droid...\n' > /proc/self/fd/$2
+cp ${FDROID} ${F_DIR}
+chmod 644 ${F_DIR}/${FDROID}
+
+echo -n -e 'ui_print Installing GmsCore...\n' > /proc/self/fd/$2
+cp ${GMS} ${GMS_DIR}
+chmod 644 ${GMS_DIR}/${GMS}
+
+echo -n -e 'ui_print Installing GsfProxy...\n' > /proc/self/fd/$2
+cp ${GSF} ${GSF_DIR}
+chmod 644 ${GSF_DIR}/${GSF}
+
+echo -n -e 'ui_print Installing FakeStore...\n' > /proc/self/fd/$2
+cp ${FS} ${FS_DIR}
+chmod 644 ${FS_DIR}/${FS}
+
+echo -n -e 'ui_print Installing IchnaeaNlpBackend...\n' > /proc/self/fd/$2
+cp ${INB} ${INB_DIR}
+chmod 644 ${INB_DIR}/${INB}
+
+echo -n -e 'ui_print Installing NominatimGeocoderBackend...\n' > /proc/self/fd/$2
+cp ${NGB} ${NGB_DIR}
+chmod 644 ${NGB_DIR}/${NGB}
+
+cp ${ADDOND} ${SYSTEM}/addon.d/
+
+umount "$MOUNT_POINT"
+
+echo -n -e 'ui_print Done\n' > /proc/self/fd/$2
