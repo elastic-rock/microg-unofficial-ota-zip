@@ -17,15 +17,14 @@ app/NominatimGeocoderBackend.apk
 app/NominatimGeocoderBackend/NominatimGeocoderBackend.apk
 app/IchnaeaNlpBackend.apk
 app/IchnaeaNlpBackend/IchnaeaNlpBackend.apk
+app/GsfProxy.apk
+app/GsfProxy/GsfProxy.apk
 etc/permissions/privapp-permissions-microg.xml
-etc/default-permissions/default-permissions-microg.xml
 etc/sysconfig/sysconfig-microg.xml
 priv-app/F-DroidPrivilegedExtension.apk
 priv-app/F-DroidPrivilegedExtension/F-DroidPrivilegedExtension.apk
 priv-app/GmsCore.apk
 priv-app/GmsCore/GmsCore.apk
-priv-app/GsfProxy.apk
-priv-app/GsfProxy/GsfProxy.apk
 priv-app/FakeStore.apk
 priv-app/FakeStore/FakeStore.apk
 EOF

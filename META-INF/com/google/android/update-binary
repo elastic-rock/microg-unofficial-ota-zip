@@ -83,7 +83,7 @@ rm -rf "${SYSTEM}/app/F-Droid"*
 rm -rf "${SYSTEM}/priv-app/F-Droid"*
 
 rm -rf "${SYSTEM}/priv-app/GmsCore"*
-rm -rf "${SYSTEM}/priv-app/GsfProxy"*
+rm -rf "${SYSTEM}/app/GsfProxy"*
 rm -rf "${SYSTEM}/priv-app/FakeStore"*
 
 rm -rf "${SYSTEM}/app/IchnaeaNlpBackend"*
@@ -102,7 +102,7 @@ then
   mkdir ${GMS_DIR}
   chmod 755 ${GMS_DIR}
   
-  GSF_DIR="${SYSTEM}/priv-app/${GSF_NAME}"
+  GSF_DIR="${SYSTEM}/app/${GSF_NAME}"
   mkdir ${GSF_DIR}
   chmod 755 ${GSF_DIR}
   
@@ -123,7 +123,7 @@ then
   FPE_DIR="${SYSTEM}/priv-app"
   F_DIR="${SYSTEM}/app"
   GMS_DIR="${SYSTEM}/priv-app"
-  GSF_DIR="${SYSTEM}/priv-app"
+  GSF_DIR="${SYSTEM}/app"
   FS_DIR="${SYSTEM}/priv-app"
   INB_DIR="${SYSTEM}/app"
   NGB_DIR="${SYSTEM}/app"
