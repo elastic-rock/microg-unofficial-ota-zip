@@ -35,7 +35,7 @@ GSF=${GSF_NAME}.apk
 FS_NAME=FakeStore
 FS=${FS_NAME}.apk
 
-INB_NAME=IchnilegedaeaNlpBackend
+INB_NAME=IchnaeaNlpBackend
 INB=${INB_NAME}.apk
 
 NGB_NAME=NominatimGeocoderBackend
