@@ -35,9 +35,9 @@ INB=${INB_NAME}.apk
 NGB_NAME=NominatimGeocoderBackend
 NGB=${NGB_NAME}.apk
 
-P_PERM=privapp-permissions-microg.xml
+P_PERM=permissions_com.google.android.gms.xml
 P_PERM_DIR="etc/permissions"
-SYSCON=sysconfig-microg.xml
+SYSCON=sysconfig_com.google.android.gms.xml
 SYSCON_DIR="etc/sysconfig"
 
 ADDOND=80-microg.sh

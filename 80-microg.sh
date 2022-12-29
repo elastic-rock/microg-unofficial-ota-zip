@@ -17,8 +17,8 @@ app/IchnaeaNlpBackend.apk
 app/IchnaeaNlpBackend/IchnaeaNlpBackend.apk
 app/GsfProxy.apk
 app/GsfProxy/GsfProxy.apk
-etc/permissions/privapp-permissions-microg.xml
-etc/sysconfig/sysconfig-microg.xml
+etc/permissions/permissions_com.google.android.gms.xml
+etc/sysconfig/sysconfig_com.google.android.gms.xml
 priv-app/GmsCore.apk
 priv-app/GmsCore/GmsCore.apk
 priv-app/FakeStore.apk
