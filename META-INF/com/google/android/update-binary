@@ -20,12 +20,6 @@
 
 echo -n -e 'ui_print Preparing...\n' > /proc/self/fd/$2
 
-FPE_NAME=F-DroidPrivilegedExtension
-FPE=${FPE_NAME}.apk
-
-FDROID_NAME=F-Droid
-FDROID=${FDROID_NAME}.apk
-
 GMS_NAME=GmsCore
 GMS=${GMS_NAME}.apk
 
@@ -43,8 +37,6 @@ NGB=${NGB_NAME}.apk
 
 P_PERM=privapp-permissions-microg.xml
 P_PERM_DIR="etc/permissions"
-D_PERM=default-permissions-microg.xml
-D_PERM_DIR="etc/default-permissions"
 SYSCON=sysconfig-microg.xml
 SYSCON_DIR="etc/sysconfig"
 
@@ -77,11 +69,6 @@ else
   mount "/dev/block/bootdevice/by-name/system" "$MOUNT_POINT"
 fi
 
-rm -rf "${SYSTEM}/app/FDroid"*
-rm -rf "${SYSTEM}/priv-app/FDroid"*
-rm -rf "${SYSTEM}/app/F-Droid"*
-rm -rf "${SYSTEM}/priv-app/F-Droid"*
-
 rm -rf "${SYSTEM}/priv-app/GmsCore"*
 rm -rf "${SYSTEM}/app/GsfProxy"*
 rm -rf "${SYSTEM}/priv-app/FakeStore"*
@@ -91,12 +78,6 @@ rm -rf "${SYSTEM}/app/NominatimGeocoderBackend"*
 
 if [ "${BUILD_VERSION_SDK_INT}" -ge 21 ]
 then
-  FPE_DIR="${SYSTEM}/priv-app/${FPE_NAME}"
-  mkdir ${FPE_DIR}
-  chmod 755 ${FPE_DIR}
-  F_DIR="${SYSTEM}/app/${FDROID_NAME}"
-  mkdir ${F_DIR}
-  chmod 755 ${F_DIR}
   
   GMS_DIR="${SYSTEM}/priv-app/${GMS_NAME}"
   mkdir ${GMS_DIR}
@@ -120,8 +101,6 @@ then
   
 elif [ "${BUILD_VERSION_SDK_INT}" -ge 19 ]
 then
-  FPE_DIR="${SYSTEM}/priv-app"
-  F_DIR="${SYSTEM}/app"
   GMS_DIR="${SYSTEM}/priv-app"
   GSF_DIR="${SYSTEM}/app"
   FS_DIR="${SYSTEM}/priv-app"
@@ -129,8 +108,6 @@ then
   NGB_DIR="${SYSTEM}/app"
   
 else
-  FPE_DIR="${SYSTEM}/app"
-  F_DIR="${SYSTEM}/app"
   GMS_DIR="${SYSTEM}/app"
   GSF_DIR="${SYSTEM}/app"
   FS_DIR="${SYSTEM}/app"
@@ -146,24 +123,11 @@ then
 	cp ${P_PERM} ${SYSTEM}/${P_PERM_DIR}
 	chmod 644 ${SYSTEM}/${P_PERM_DIR}/${P_PERM}
 	
-	mkdir ${SYSTEM}/${D_PERM_DIR}
-	chmod 755 ${SYSTEM}/${D_PERM_DIR}
-	cp ${D_PERM} ${SYSTEM}/${D_PERM_DIR}
-	chmod 644 ${SYSTEM}/${D_PERM_DIR}/${D_PERM}
-	
 	mkdir ${SYSTEM}/${SYSCON_DIR}
 	chmod 755 ${SYSTEM}/${SYSCON_DIR}
 	cp ${SYSCON} ${SYSTEM}/${SYSCON_DIR}
 	chmod 644 ${SYSTEM}/${SYSCON_DIR}/${SYSCON}
 fi
-
-echo -n -e 'ui_print Installing F-DroidPrivilegedExtension...\n' > /proc/self/fd/$2
-cp ${FPE} ${FPE_DIR}
-chmod 644 ${FPE_DIR}/${FPE}
-
-echo -n -e 'ui_print Installing F-Droid...\n' > /proc/self/fd/$2
-cp ${FDROID} ${F_DIR}
-chmod 644 ${F_DIR}/${FDROID}
 
 echo -n -e 'ui_print Installing GmsCore...\n' > /proc/self/fd/$2
 cp ${GMS} ${GMS_DIR}
