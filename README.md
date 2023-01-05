@@ -15,5 +15,4 @@
 This repo would have not been able without:
 * [MicroG](https://github.com/microg/GmsCore) for making a de-googled experience possible
 * [Lineage for MicroG](https://github.com/lineageos4microg/android_vendor_partner_gms) for their amazing repo that helped me build my OTA zip.
-* [F-Droid](https://f-droid.org/) for their PlayStore alternative.
 If you can, please support these projects.
