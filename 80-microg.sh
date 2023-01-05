@@ -11,10 +11,6 @@
 
 list_files() {
 cat <<EOF
-app/NominatimGeocoderBackend.apk
-app/NominatimGeocoderBackend/NominatimGeocoderBackend.apk
-app/IchnaeaNlpBackend.apk
-app/IchnaeaNlpBackend/IchnaeaNlpBackend.apk
 app/GsfProxy.apk
 app/GsfProxy/GsfProxy.apk
 etc/permissions/permissions_com.google.android.gms.xml
