@@ -13,6 +13,7 @@
 4) Voilà. You have flashed F-Droid and MicroG on your phone. You may now reboot into the system and configure MicroG.
 # Thanks to
 This repo would have not been able without:
-* [MicroG](https://github.com/microg/GmsCore) for making a de-googled experience possible
+* [MicroG](https://github.com/microg/GmsCore) for making a de-googled experience possible.
 * [Lineage for MicroG](https://github.com/lineageos4microg/android_vendor_partner_gms) for their amazing repo that helped me build my OTA zip.
+
 If you can, please support these projects.
