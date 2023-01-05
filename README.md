@@ -1,4 +1,6 @@
 # MicroG Unofficial OTA Zip
+**The project is in active development and is therefore unstable**
+
 [MicroG](https://github.com/microg/GmsCore) requires GmsCore to be installed into the `/system/priv-app` folder in order for location to function through MicroG. It is not, however, possible to install an app into `/system/priv-app` through the OS like one would normaly do. It has to be installed through recovery or with root privilages. Since not everyone wants to root their phone or has the knowledge to do so, installing through recovery is the way to go. Further more, with every ROM OTA update, the sideloaded apps would get wiped. This OTA zip therefore also includes a script that backs up the sideloaded apps before an update and restores them after the update. It also includes [F-Droid](https://f-droid.org/) and the [F-Droid Privileged Extension](https://f-droid.org/packages/org.fdroid.fdroid.privileged.ota/).
 # Installation
 ### Prerequisites
