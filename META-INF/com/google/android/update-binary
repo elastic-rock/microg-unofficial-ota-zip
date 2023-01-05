@@ -29,12 +29,6 @@ GSF=${GSF_NAME}.apk
 FS_NAME=FakeStore
 FS=${FS_NAME}.apk
 
-INB_NAME=IchnaeaNlpBackend
-INB=${INB_NAME}.apk
-
-NGB_NAME=NominatimGeocoderBackend
-NGB=${NGB_NAME}.apk
-
 P_PERM=permissions_com.google.android.gms.xml
 P_PERM_DIR="etc/permissions"
 SYSCON=sysconfig_com.google.android.gms.xml
@@ -73,9 +67,6 @@ rm -rf "${SYSTEM}/priv-app/GmsCore"*
 rm -rf "${SYSTEM}/app/GsfProxy"*
 rm -rf "${SYSTEM}/priv-app/FakeStore"*
 
-rm -rf "${SYSTEM}/app/IchnaeaNlpBackend"*
-rm -rf "${SYSTEM}/app/NominatimGeocoderBackend"*
-
 if [ "${BUILD_VERSION_SDK_INT}" -ge 21 ]
 then
   
@@ -91,28 +82,16 @@ then
   mkdir ${FS_DIR}
   chmod 755 ${FS_DIR}
   
-  INB_DIR="${SYSTEM}/app/${INB_NAME}"
-  mkdir ${INB_DIR}
-  chmod 755 ${INB_DIR}
-  
-  NGB_DIR="${SYSTEM}/app/${NGB_NAME}"
-  mkdir ${NGB_DIR}
-  chmod 755 ${NGB_DIR}
-  
 elif [ "${BUILD_VERSION_SDK_INT}" -ge 19 ]
 then
   GMS_DIR="${SYSTEM}/priv-app"
   GSF_DIR="${SYSTEM}/app"
   FS_DIR="${SYSTEM}/priv-app"
-  INB_DIR="${SYSTEM}/app"
-  NGB_DIR="${SYSTEM}/app"
-  
+
 else
   GMS_DIR="${SYSTEM}/app"
   GSF_DIR="${SYSTEM}/app"
   FS_DIR="${SYSTEM}/app"
-  INB_DIR="${SYSTEM}/app"
-  NGB_DIR="${SYSTEM}/app"
 fi
 
 echo -n -e 'ui_print Installing Permissions...\n' > /proc/self/fd/$2
@@ -140,14 +119,6 @@ chmod 644 ${GSF_DIR}/${GSF}
 echo -n -e 'ui_print Installing FakeStore...\n' > /proc/self/fd/$2
 cp ${FS} ${FS_DIR}
 chmod 644 ${FS_DIR}/${FS}
-
-echo -n -e 'ui_print Installing IchnaeaNlpBackend...\n' > /proc/self/fd/$2
-cp ${INB} ${INB_DIR}
-chmod 644 ${INB_DIR}/${INB}
-
-echo -n -e 'ui_print Installing NominatimGeocoderBackend...\n' > /proc/self/fd/$2
-cp ${NGB} ${NGB_DIR}
-chmod 644 ${NGB_DIR}/${NGB}
 
 cp ${ADDOND} ${SYSTEM}/addon.d/
 
